@@ -1,364 +1,403 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
+final List<String> titleMenu = [
+  '학과안내',
+  '센터',
+  '입학안내',
+  '학과행정',
+  '학생활동',
+  '취업정보',
+  '교직과정',
+  '대학원'
+];
+
+// '학과안내',
+List<String> departmentInfo = [
+  '학과소개',
+  '학과장인사말',
+  '교육체계',
+  '교육철학 및 교표',
+  '학과연혁',
+  '교수소개',
+  '졸업 후 진로',
+  '오시는 길',
+];
+
+// '센터',
+List<String> center = [
+  '센터 설명',
+];
+
+// '입학안내',
+List<String> admissionInfo = [
+  '신입학',
+  '편입학',
+  '장학제도',
+];
+
+// '학과행정',
+List<String> departmentAdmin = [
+  '공지사항',
+  '학사일정',
+  '교과과장',
+  '교직과정',
+  '자료실',
+  '간호교육인증평가',
+];
+
+// '학생활동',
+List<String> studentActivities = [
+  '학생회사진',
+  '사진첩',
+  '학과동아리',
+];
+
+// '취업정보',
+List<String> tmploymentInfo = [
+  '국가고시자격증',
+  '취업정보시이트',
+  '취업공고문',
+];
+
+// '교직과정',
+List<String> teachingCourse = [
+  '교육과정',
+  '공지사항',
+];
+
+// '대학원',
+List<String> departmentNursing = [
+  '교육과정',
+  '석사존문',
+  '졸업자격시험',
+  '대학원 공지사항',
+  '행정서식',
+];
+
+List<List<String>> subMenu = [
+  departmentInfo,
+  center,
+  admissionInfo,
+  departmentAdmin,
+  studentActivities,
+  tmploymentInfo,
+  teachingCourse,
+  departmentNursing,
+];
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  HomePageState createState() => HomePageState(); // Changed to public
+  HomePageState createState() => HomePageState();
 }
 
 class HomePageState extends State<HomePage> {
-  late List<Color> _hoveredButtonColors; // Marked as late
+  double appBarHeight = 70; // header height
+  late List<Color> _hoverMenuColor;
+  bool _isSubmenuOpen = false;
+  int? _menuIndex;
+  double subMenuHeight = 0;
+  double subMenuMinHeight = 0;
+  double subMenuMaxHeight = 240;
+  double crossAxisSpacing = 20;
+  double mainAxisSpacing = 14;
+
+  Color fontColor = Colors.white;
 
   @override
   void initState() {
     super.initState();
-    _hoveredButtonColors = List<Color>.filled(
-        8, Colors.black); // Initialize with black for all buttons
+    _hoverMenuColor = List<Color>.filled(8, Colors.black);
   }
 
   @override
   Widget build(BuildContext context) {
+    double gridWidth =
+        MediaQuery.of(context).size.width * 0.55; // 55% of the screen width
+    double gridHeight = 140;
+
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(70),
-        child: AppBar(
-          flexibleSpace: SafeArea(
+      appBar: AppBar(
+        toolbarHeight: appBarHeight,
+        backgroundColor: Colors.white,
+        titleSpacing: 50,
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/images/logo.png',
+              width: 310,
+              height: 40,
+            ),
+          ],
+        ),
+        actions: [
+          Container(
             child: Row(
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Image.asset('assets/logo.png', height: 70),
-                ),
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      // Button 1
-                      SizedBox(
-                        height: 70,
-                        child: MouseRegion(
-                          onEnter: (_) => setState(() {
-                            _hoveredButtonColors[0] = const Color(0xFF2E3092);
-                          }),
-                          onExit: (_) => setState(() {
-                            _hoveredButtonColors[0] = Colors.black;
-                          }),
-                          child: TextButton(
-                            onPressed: () {},
-                            style: TextButton.styleFrom(
-                              overlayColor: Colors
-                                  .transparent, // Keep overlay transparent
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 30),
-                              minimumSize: Size.zero,
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.zero),
-                            ),
-                            child: Text(
-                              '학과안내',
-                              style: TextStyle(
-                                color: _hoveredButtonColors[
-                                    0], // Use hover color for text
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      // Button 2
-                      SizedBox(
-                        height: 70,
-                        child: MouseRegion(
-                          onEnter: (_) => setState(() {
-                            _hoveredButtonColors[1] = const Color(0xFF2E3092);
-                          }),
-                          onExit: (_) => setState(() {
-                            _hoveredButtonColors[1] = Colors.black;
-                          }),
-                          child: TextButton(
-                            onPressed: () {},
-                            style: TextButton.styleFrom(
-                              overlayColor: Colors
-                                  .transparent, // Keep overlay transparent
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 30),
-                              minimumSize: Size.zero,
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.zero),
-                            ),
-                            child: Text(
-                              '센터',
-                              style: TextStyle(
-                                color: _hoveredButtonColors[1],
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      // Button 3
-                      SizedBox(
-                        height: 70,
-                        child: MouseRegion(
-                          onEnter: (_) => setState(() {
-                            _hoveredButtonColors[2] = const Color(0xFF2E3092);
-                          }),
-                          onExit: (_) => setState(() {
-                            _hoveredButtonColors[2] = Colors.black;
-                          }),
-                          child: TextButton(
-                            onPressed: () {},
-                            style: TextButton.styleFrom(
-                              overlayColor: Colors
-                                  .transparent, // Keep overlay transparent
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 30),
-                              minimumSize: Size.zero,
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.zero),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  '입학안내',
-                                  style: TextStyle(
-                                    color: _hoveredButtonColors[2],
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(
-                                    width:
-                                        5), // Add some space between text and icon
-                                SvgPicture.asset(
-                                  'assets/icons/link.svg',
-                                  colorFilter: ColorFilter.mode(
-                                    _hoveredButtonColors[2],
-                                    BlendMode.srcIn,
-                                  ),
-                                  width: 30.0,
-                                  height: 30.0,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      // Button 4
-                      SizedBox(
-                        height: 70,
-                        child: MouseRegion(
-                          onEnter: (_) => setState(() {
-                            _hoveredButtonColors[3] = const Color(0xFF2E3092);
-                          }),
-                          onExit: (_) => setState(() {
-                            _hoveredButtonColors[3] = Colors.black;
-                          }),
-                          child: TextButton(
-                            onPressed: () {},
-                            style: TextButton.styleFrom(
-                              overlayColor: Colors
-                                  .transparent, // Keep overlay transparent
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 30),
-                              minimumSize: Size.zero,
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.zero),
-                            ),
-                            child: Text(
-                              '학과행정',
-                              style: TextStyle(
-                                color: _hoveredButtonColors[3],
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      // Button 5
-                      SizedBox(
-                        height: 70,
-                        child: MouseRegion(
-                          onEnter: (_) => setState(() {
-                            _hoveredButtonColors[4] = const Color(0xFF2E3092);
-                          }),
-                          onExit: (_) => setState(() {
-                            _hoveredButtonColors[4] = Colors.black;
-                          }),
-                          child: TextButton(
-                            onPressed: () {},
-                            style: TextButton.styleFrom(
-                              overlayColor: Colors
-                                  .transparent, // Keep overlay transparent
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 30),
-                              minimumSize: Size.zero,
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.zero),
-                            ),
-                            child: Text(
-                              '학생활동',
-                              style: TextStyle(
-                                color: _hoveredButtonColors[4],
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      // Button 6
-                      SizedBox(
-                        height: 70,
-                        child: MouseRegion(
-                          onEnter: (_) => setState(() {
-                            _hoveredButtonColors[5] = const Color(0xFF2E3092);
-                          }),
-                          onExit: (_) => setState(() {
-                            _hoveredButtonColors[5] = Colors.black;
-                          }),
-                          child: TextButton(
-                            onPressed: () {},
-                            style: TextButton.styleFrom(
-                              overlayColor: Colors
-                                  .transparent, // Keep overlay transparent
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 30),
-                              minimumSize: Size.zero,
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.zero),
-                            ),
-                            child: Text(
-                              '취업정보',
-                              style: TextStyle(
-                                color: _hoveredButtonColors[5],
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      // Button 7
-                      SizedBox(
-                        height: 70,
-                        child: MouseRegion(
-                          onEnter: (_) => setState(() {
-                            _hoveredButtonColors[6] = const Color(0xFF2E3092);
-                          }),
-                          onExit: (_) => setState(() {
-                            _hoveredButtonColors[6] = Colors.black;
-                          }),
-                          child: TextButton(
-                            onPressed: () {},
-                            style: TextButton.styleFrom(
-                              overlayColor: Colors
-                                  .transparent, // Keep overlay transparent
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 30),
-                              minimumSize: Size.zero,
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.zero),
-                            ),
-                            child: Text(
-                              '교육과정',
-                              style: TextStyle(
-                                color: _hoveredButtonColors[6],
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      // Button 8
-                      SizedBox(
-                        height: 70,
-                        child: MouseRegion(
-                          onEnter: (_) => setState(() {
-                            _hoveredButtonColors[7] = const Color(0xFF2E3092);
-                          }),
-                          onExit: (_) => setState(() {
-                            _hoveredButtonColors[7] = Colors.black;
-                          }),
-                          child: TextButton(
-                            onPressed: () {},
-                            style: TextButton.styleFrom(
-                              overlayColor: Colors
-                                  .transparent, // Keep overlay transparent
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 30),
-                              minimumSize: Size.zero,
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.zero),
-                            ),
-                            child: Text(
-                              '간호학과',
-                              style: TextStyle(
-                                color: _hoveredButtonColors[7],
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      // HOME
-                      SizedBox(
-                        height: 70,
-                        child: TextButton(
-                          onPressed: () {},
-                          style: TextButton.styleFrom(
-                            overlayColor:
-                                Colors.transparent, // Keep overlay transparent
-                            padding: const EdgeInsets.only(left: 30, top: 12),
-                            minimumSize: Size.zero,
-                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.zero),
-                          ),
-                          child: const Text(
-                            'HOME',
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      IconButton(
-                        icon: const Icon(CupertinoIcons.search),
-                        iconSize: 46,
+                for (int i = 0; i < 8; i++)
+                  SizedBox(
+                    height: appBarHeight,
+                    child: MouseRegion(
+                      onEnter: (_) => setState(() {
+                        _hoverMenuColor[i] = const Color(0xFF2E3092);
+                        _menuIndex = i;
+                        _isSubmenuOpen = true;
+                        subMenuHeight = subMenuMaxHeight;
+                        fontColor = Colors.black;
+                      }),
+                      onExit: (_) => setState(() {
+                        _hoverMenuColor[i] = Colors.black;
+                        _isSubmenuOpen = false;
+                        // Remove these lines:
+                        subMenuHeight = subMenuMinHeight;
+
+                        // fontColor = Color(0xFFF4F4F4);
+                      }),
+                      child: TextButton(
                         onPressed: () {},
+                        style: TextButton.styleFrom(
+                          overlayColor: Colors.transparent,
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          minimumSize: Size.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.zero),
+                        ),
+                        child: Text(
+                          _getMenuText(i),
+                          style: TextStyle(
+                            color: _hoverMenuColor[i],
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
-                      IconButton(
-                          icon: const Icon(Icons.menu), onPressed: () {}),
-                    ],
+                    ),
+                  ),
+                const SizedBox(width: 10),
+
+                // HOME button
+                SizedBox(
+                  height: appBarHeight,
+                  child: TextButton(
+                    onPressed: () {},
+                    style: TextButton.styleFrom(
+                      padding:
+                          const EdgeInsets.only(top: 12, left: 10, right: 10),
+                      overlayColor: Colors.transparent,
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero,
+                      ),
+                    ),
+                    child: const Text(
+                      'HOME',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ),
                 ),
+                const SizedBox(width: 10),
+
+                // Search header button
+                IconButton(
+                  onPressed: () {},
+                  style: IconButton.styleFrom(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.zero,
+                    ),
+                    fixedSize: const Size(64, 70),
+                  ),
+                  padding: const EdgeInsets.only(top: 10),
+                  icon: Image.asset(
+                    'assets/images/header1_search.png',
+                    width: 50,
+                    height: 50,
+                  ),
+                ),
+
+                const SizedBox(width: 10),
+
+                // Show all menu button
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.menu),
+                  color: Colors.white,
+                  iconSize: 38,
+                  padding: const EdgeInsets.only(top: 5),
+                  style: IconButton.styleFrom(
+                    backgroundColor: const Color(0xFF2E3092),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero),
+                    fixedSize: const Size(64, 70),
+                  ),
+                ),
+                const SizedBox(width: 35),
               ],
             ),
           ),
+        ],
+      ),
+      body: Stack(
+        children: [
+          // Body Content
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: 400,
+            // color: Colors.yellow, // Add a color for visibility
+          ),
+
+          // Barrier to prevent interaction with the background
+          if (_isSubmenuOpen) // Show barrier only when submenu is open
+            const ModalBarrier(
+              dismissible: false, // Prevent dismissing the barrier
+              color: Colors.black26, // Semi-transparent color
+            ),
+
+          // Drop down menu when hover menu TextButton
+          Positioned(
+            // Use Positioned to control the placement
+            top: 0, // Position it at the top
+            left: 0,
+            right: 0,
+            child: MouseRegion(
+              onEnter: (_) => setState(() {
+                _hoverMenuColor[_menuIndex!] = const Color(0xFF2E3092);
+                _isSubmenuOpen = true;
+                subMenuHeight = subMenuMaxHeight;
+              }),
+              onExit: (_) {
+                setState(() {
+                  _isSubmenuOpen = false;
+                  _hoverMenuColor[_menuIndex!] = Colors.black;
+                });
+                Future.delayed(const Duration(milliseconds: 300), () {
+                  setState(() {
+                    subMenuHeight = subMenuMinHeight;
+                  });
+                  log('onExit $subMenuHeight');
+                });
+                log('onExit');
+              },
+              child: AnimatedContainer(
+                width: MediaQuery.of(context).size.width,
+                height: subMenuHeight,
+                decoration: const BoxDecoration(
+                  // color: Colors.red,
+                  color: Color(0xFFF4F4F4),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(30),
+                    bottomRight: Radius.circular(30),
+                  ),
+                ),
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.linear,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.35,
+                      height: subMenuHeight,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(30),
+                        ),
+                      ),
+                      padding: const EdgeInsets.only(left: 200),
+                      child: Center(
+                        child: AnimatedDefaultTextStyle(
+                          duration: const Duration(milliseconds: 300),
+                          style: TextStyle(
+                            fontSize: 40,
+                            fontWeight: FontWeight.w800,
+                            color: fontColor,
+                          ),
+                          child: Text(
+                            _menuIndex != null
+                                ? titleMenu[_menuIndex!]
+                                : '학과안내',
+                          ),
+                          curve: Curves.easeOut,
+                        ),
+                      ),
+                    ),
+                    if (_menuIndex != null)
+                      Container(
+                        // color: Colors.blue,
+                        width: gridWidth,
+                        height: gridHeight,
+                        margin: const EdgeInsets.only(top: 80),
+                        child: GridView.builder(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4,
+                            crossAxisSpacing: crossAxisSpacing,
+                            mainAxisSpacing: mainAxisSpacing,
+                            childAspectRatio: 5,
+                          ),
+                          itemCount: subMenu[_menuIndex!].length,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, i) {
+                            String text = subMenu[_menuIndex!][i];
+                            return TextButton(
+                              onPressed: () {},
+                              style: TextButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                foregroundColor: Colors.black,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                              child: Text(
+                                text,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _menuButton(String text) {
+    return TextButton(
+      onPressed: () {},
+      style: TextButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+          side: const BorderSide(color: Colors.grey),
         ),
       ),
-      // Removed body
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+      ),
     );
+  }
+
+  String _getMenuText(int index) {
+    return titleMenu[index];
   }
 }
