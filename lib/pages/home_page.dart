@@ -1,91 +1,8 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
-
-final List<String> titleMenu = [
-  '학과안내',
-  '센터',
-  '입학안내',
-  '학과행정',
-  '학생활동',
-  '취업정보',
-  '교직과정',
-  '대학원'
-];
-
-// '학과안내',
-List<String> departmentInfo = [
-  '학과소개',
-  '학과장인사말',
-  '교육체계',
-  '교육철학 및 교표',
-  '학과연혁',
-  '교수소개',
-  '졸업 후 진로',
-  '오시는 길',
-];
-
-// '센터',
-List<String> center = [
-  '센터 설명',
-];
-
-// '입학안내',
-List<String> admissionInfo = [
-  '신입학',
-  '편입학',
-  '장학제도',
-];
-
-// '학과행정',
-List<String> departmentAdmin = [
-  '공지사항',
-  '학사일정',
-  '교과과장',
-  '교직과정',
-  '자료실',
-  '간호교육인증평가',
-];
-
-// '학생활동',
-List<String> studentActivities = [
-  '학생회사진',
-  '사진첩',
-  '학과동아리',
-];
-
-// '취업정보',
-List<String> tmploymentInfo = [
-  '국가고시자격증',
-  '취업정보시이트',
-  '취업공고문',
-];
-
-// '교직과정',
-List<String> teachingCourse = [
-  '교육과정',
-  '공지사항',
-];
-
-// '대학원',
-List<String> departmentNursing = [
-  '교육과정',
-  '석사존문',
-  '졸업자격시험',
-  '대학원 공지사항',
-  '행정서식',
-];
-
-List<List<String>> subMenu = [
-  departmentInfo,
-  center,
-  admissionInfo,
-  departmentAdmin,
-  studentActivities,
-  tmploymentInfo,
-  teachingCourse,
-  departmentNursing,
-];
+import 'package:nurse_department/constants/color_constant.dart';
+import 'package:nurse_department/constants/menu_data_constant.dart';
+import 'package:nurse_department/constants/size_data_constant.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -95,13 +12,12 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  double appBarHeight = 70; // header height
   late List<Color> _hoverMenuColor;
   bool _isSubmenuOpen = false;
   int? _menuIndex;
   double subMenuHeight = 0;
   double subMenuMinHeight = 0;
-  double subMenuMaxHeight = 240;
+
   double crossAxisSpacing = 20;
   double mainAxisSpacing = 14;
 
@@ -121,128 +37,117 @@ class HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: appBarHeight,
-        backgroundColor: Colors.white,
+        toolbarHeight: AppBarSize.height,
         titleSpacing: 50,
-        title: Row(
-          children: [
-            Image.asset(
-              'assets/images/logo.png',
-              width: 310,
-              height: 40,
-            ),
-          ],
+        title: Image.asset(
+          'assets/images/logo.png',
+          width: LogoSize.width,
+          height: LogoSize.height,
+          fit: BoxFit.contain,
         ),
         actions: [
-          Container(
-            child: Row(
-              children: [
-                for (int i = 0; i < 8; i++)
-                  SizedBox(
-                    height: appBarHeight,
-                    child: MouseRegion(
-                      onEnter: (_) => setState(() {
-                        _hoverMenuColor[i] = const Color(0xFF2E3092);
-                        _menuIndex = i;
-                        _isSubmenuOpen = true;
-                        subMenuHeight = subMenuMaxHeight;
-                        fontColor = Colors.black;
-                      }),
-                      onExit: (_) => setState(() {
-                        _hoverMenuColor[i] = Colors.black;
-                        _isSubmenuOpen = false;
-                        // Remove these lines:
-                        subMenuHeight = subMenuMinHeight;
+          for (int i = 0; i < 8; i++)
+            SizedBox(
+              height: AppBarSize.height,
+              child: MouseRegion(
+                onEnter: (_) => setState(() {
+                  _hoverMenuColor[i] = AppColor.color;
+                  _menuIndex = i;
+                  _isSubmenuOpen = true;
+                  subMenuHeight = SubMenuSize.height;
+                  fontColor = Colors.black;
+                }),
+                onExit: (_) => setState(() {
+                  _hoverMenuColor[i] = Colors.black;
+                  _isSubmenuOpen = false;
+                  // Remove these lines:
+                  subMenuHeight = subMenuMinHeight;
 
-                        // fontColor = Color(0xFFF4F4F4);
-                      }),
-                      child: TextButton(
-                        onPressed: () {},
-                        style: TextButton.styleFrom(
-                          overlayColor: Colors.transparent,
-                          padding: const EdgeInsets.symmetric(horizontal: 30),
-                          minimumSize: Size.zero,
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.zero),
-                        ),
-                        child: Text(
-                          _getMenuText(i),
-                          style: TextStyle(
-                            color: _hoverMenuColor[i],
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                const SizedBox(width: 10),
-
-                // HOME button
-                SizedBox(
-                  height: appBarHeight,
-                  child: TextButton(
-                    onPressed: () {},
-                    style: TextButton.styleFrom(
-                      padding:
-                          const EdgeInsets.only(top: 12, left: 10, right: 10),
-                      overlayColor: Colors.transparent,
-                      minimumSize: Size.zero,
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.zero,
-                      ),
-                    ),
-                    child: const Text(
-                      'HOME',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-
-                // Search header button
-                IconButton(
+                  // fontColor = Color(0xFFF4F4F4);
+                }),
+                child: TextButton(
                   onPressed: () {},
-                  style: IconButton.styleFrom(
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.zero,
-                    ),
-                    fixedSize: const Size(64, 70),
-                  ),
-                  padding: const EdgeInsets.only(top: 10),
-                  icon: Image.asset(
-                    'assets/images/header1_search.png',
-                    width: 50,
-                    height: 50,
-                  ),
-                ),
-
-                const SizedBox(width: 10),
-
-                // Show all menu button
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.menu),
-                  color: Colors.white,
-                  iconSize: 38,
-                  padding: const EdgeInsets.only(top: 5),
-                  style: IconButton.styleFrom(
-                    backgroundColor: const Color(0xFF2E3092),
+                  style: TextButton.styleFrom(
+                    overlayColor: Colors.transparent,
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    minimumSize: Size.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.zero),
-                    fixedSize: const Size(64, 70),
+                  ),
+                  child: Text(
+                    _getMenuText(i),
+                    style: TextStyle(
+                      color: _hoverMenuColor[i],
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-                const SizedBox(width: 35),
-              ],
+              ),
+            ),
+          const SizedBox(width: 15),
+
+          // HOME button
+          SizedBox(
+            height: AppBarSize.height,
+            child: TextButton(
+              onPressed: () {},
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.only(top: 12, left: 10, right: 10),
+                overlayColor: Colors.transparent,
+                minimumSize: Size.zero,
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.zero,
+                ),
+              ),
+              child: const Text(
+                'HOME',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             ),
           ),
+          const SizedBox(width: 10),
+
+          // Search header button
+          IconButton(
+            onPressed: () {},
+            style: IconButton.styleFrom(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.zero,
+              ),
+              fixedSize: const Size(64, AppBarSize.height),
+            ),
+            padding: const EdgeInsets.only(top: 10),
+            icon: Image.asset(
+              'assets/images/header1_search.png',
+              width: 50,
+              height: 50,
+            ),
+          ),
+
+          const SizedBox(width: 10),
+
+          // Show all menu button
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.menu),
+            color: Colors.white,
+            iconSize: 38,
+            padding: const EdgeInsets.only(top: 5),
+            style: IconButton.styleFrom(
+              backgroundColor: AppColor.color,
+              shape:
+                  const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+              fixedSize: const Size(64, AppBarSize.height),
+            ),
+          ),
+          const SizedBox(width: 35),
         ],
       ),
       body: Stack(
@@ -258,7 +163,7 @@ class HomePageState extends State<HomePage> {
           if (_isSubmenuOpen) // Show barrier only when submenu is open
             const ModalBarrier(
               dismissible: false, // Prevent dismissing the barrier
-              color: Colors.black26, // Semi-transparent color
+              color: Colors.black38, // Semi-transparent color
             ),
 
           // Drop down menu when hover menu TextButton
@@ -269,18 +174,18 @@ class HomePageState extends State<HomePage> {
             right: 0,
             child: MouseRegion(
               onEnter: (_) => setState(() {
-                _hoverMenuColor[_menuIndex!] = const Color(0xFF2E3092);
+                _hoverMenuColor[_menuIndex!] = AppColor.color;
                 _isSubmenuOpen = true;
-                subMenuHeight = subMenuMaxHeight;
+                subMenuHeight = SubMenuSize.height;
               }),
               onExit: (_) {
                 setState(() {
-                  _isSubmenuOpen = false;
                   _hoverMenuColor[_menuIndex!] = Colors.black;
                 });
                 Future.delayed(const Duration(milliseconds: 300), () {
                   setState(() {
                     subMenuHeight = subMenuMinHeight;
+                    _isSubmenuOpen = false;
                   });
                   log('onExit $subMenuHeight');
                 });
