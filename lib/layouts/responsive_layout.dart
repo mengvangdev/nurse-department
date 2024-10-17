@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:nurse_department/resource/resource.dart';
 import 'dart:developer';
-import 'package:nurse_department/constants/dimension.dart';
 
 class ResponsiveLayout extends StatelessWidget {
   const ResponsiveLayout({

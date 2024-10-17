@@ -1,9 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:nurse_department/layouts/laptop_layout.dart';
-import 'package:nurse_department/layouts/responsive_layout.dart';
-import 'package:nurse_department/layouts/mobile_layout.dart';
-import 'package:nurse_department/layouts/tablet_layout.dart';
-import 'package:nurse_department/layouts/desktop_layout.dart';
+import 'package:nurse_department/resource/resource.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

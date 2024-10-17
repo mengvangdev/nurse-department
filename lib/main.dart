@@ -1,8 +1,16 @@
-import 'package:flutter/material.dart';
-import 'pages/home_page.dart';
+import 'package:nurse_department/resource/resource.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => MenuProvider(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

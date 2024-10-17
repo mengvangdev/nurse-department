@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:nurse_department/resource/resource.dart';
 
 class TabletLayout extends StatelessWidget {
   const TabletLayout({super.key});
