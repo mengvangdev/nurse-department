@@ -1,6 +1,6 @@
 class Dimension {
-  static const double mobile = 600;
-  static const double tablet = 1200;
-  static const double laptop = 1400;
-  static const double desktop = 2400;
+  static const double mobile = 768; // max-width
+  static const double tablet = 1024; // max-width
+  static const double laptop = 1366; // max-width
+  static const double desktop = 1920; // min-width
 }

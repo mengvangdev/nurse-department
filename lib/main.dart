@@ -18,11 +18,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return MaterialApp.router(
+      routerConfig: router,
+      title: 'Andong National University',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
         scaffoldBackgroundColor:
             Colors.white, // Set scaffold background color to white
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
               .black, // Optional: Set text/icon color to black for contrast
         ),
       ),
-      home: const HomePage(),
+      // home: const HomePage(),
     );
   }
 }

@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:nurse_department/resource/resource.dart';
 
 class MenuProvider extends ChangeNotifier {
   int? _menuState;
   int? get menuState => _menuState;
   set menuState(int? value) {
+    if (value == _menuState) return;
     _menuState = value;
     notifyListeners();
   }

@@ -1,21 +1,18 @@
-import 'dart:developer';
-
 import 'package:nurse_department/resource/resource.dart';
 
-class DesktopLayout extends StatefulWidget {
-  const DesktopLayout({super.key});
+class LaptopLayout extends StatefulWidget {
+  const LaptopLayout({super.key});
 
   @override
-  State<DesktopLayout> createState() => _DesktopLayoutState();
+  State<LaptopLayout> createState() => _LaptopLayoutState();
 }
 
-class _DesktopLayoutState extends State<DesktopLayout> {
+class _LaptopLayoutState extends State<LaptopLayout> {
   List<Color> hoverMenuColor = List.filled(8, Colors.black);
   int? _currentMenuState;
   bool _isSubmenuOpen = false;
   double subMenuHeight = 0;
   bool isGridVisible = false;
-
   @override
   Widget build(BuildContext context) {
     // Calculate sizes
@@ -39,91 +36,96 @@ class _DesktopLayoutState extends State<DesktopLayout> {
     return Consumer<MenuProvider>(
       builder: (context, menuProvider, child) {
         bool isCurrentState = menuProvider.menuState != null;
-        log("isCurrentState: $isCurrentState");
+
         return Scaffold(
           appBar: AppBar(
-            toolbarHeight: DesktopSize.appBarHeight,
-            titleSpacing: 50,
+            toolbarHeight: LaptopSize.appBarHeight,
+            titleSpacing: LaptopSize.appBarRightPadding,
             title: Image.asset(
               ImagePath.logo,
-              width: DesktopSize.logoWidth,
-              height: DesktopSize.logoHeight,
+              width: LaptopSize.logoWidth,
+              height: LaptopSize.logoHeight,
               fit: BoxFit.contain,
             ),
             actions: [
               for (int index = 0; index < MenuData.titleMenu.length; index++)
-                if (menuProvider.menuState == 3)
-                  SizedBox(
-                    height: DesktopSize.appBarHeight,
-                    child: MouseRegion(
-                      onEnter: (_) => setState(() {
-                        hoverMenuColor[index] = AppColor.color;
-                        _currentMenuState = index;
-                        _isSubmenuOpen = true;
-                        subMenuHeight = DesktopSize.submenu.maxHeight;
-                        isGridVisible = true;
-                      }),
-                      onExit: (_) => setState(() {
-                        hoverMenuColor[index] = Colors.black;
-                        _isSubmenuOpen = false;
-                        subMenuHeight = DesktopSize.submenu.minHeight;
-                      }),
-                      child: TextButton(
-                        onPressed: null,
-                        style: TextButton.styleFrom(
-                          overlayColor: Colors.transparent,
-                          padding: const EdgeInsets.symmetric(horizontal: 30),
-                          minimumSize: Size.zero,
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.zero,
-                          ),
+                SizedBox(
+                  height: LaptopSize.appBarHeight,
+                  child: MouseRegion(
+                    onEnter: (_) => setState(() {
+                      hoverMenuColor[index] = AppColor.color;
+                      _currentMenuState = index;
+                      _isSubmenuOpen = true;
+                      subMenuHeight = LaptopSize.submenu.maxHeight;
+                      isGridVisible = true;
+                    }),
+                    onExit: (_) => setState(() {
+                      hoverMenuColor[index] = Colors.black;
+                      _isSubmenuOpen = false;
+                      subMenuHeight = LaptopSize.submenu.minHeight;
+                    }),
+                    child: TextButton(
+                      onPressed: null,
+                      style: TextButton.styleFrom(
+                        overlayColor: Colors.transparent,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: LaptopSize.menuPadding),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.zero,
                         ),
-                        child: index != 2
-                            ? Text(
-                                _getMenuText(index),
-                                style: TextStyle(
-                                  color: isCurrentState &&
-                                          menuProvider.menuState == index
-                                      ? AppColor.color
-                                      : Colors.black,
-                                  fontSize: DesktopSize.fontSize.menu,
-                                  fontWeight: menuProvider.menuState == index
-                                      ? FontWeight.w800
-                                      : FontWeight.bold,
-                                ),
-                              )
-                            : Row(
-                                children: [
-                                  Text(
-                                    _getMenuText(index),
-                                    style: TextStyle(
-                                      color: hoverMenuColor[index],
-                                      fontSize: DesktopSize.fontSize.menu,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  SvgPicture.asset(
-                                    ImagePath.menuIcon,
-                                    width: 22,
-                                    height: 22,
-                                    colorFilter: ColorFilter.mode(
-                                      _currentMenuState == 2
-                                          ? hoverMenuColor[index]
-                                          : Colors.black54,
-                                      BlendMode.srcIn,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                        // backgroundColor: Colors.amber,
                       ),
+                      child: index != 2
+                          ? Text(
+                              getMenuText(index),
+                              style: TextStyle(
+                                color: isCurrentState &&
+                                        menuProvider.menuState == index
+                                    ? AppColor.color
+                                    : hoverMenuColor[index],
+                                fontSize: LaptopSize.fontSize.menu,
+                                fontWeight: menuProvider.menuState == index
+                                    ? FontWeight.w800
+                                    : FontWeight.bold,
+                              ),
+                            )
+                          : Row(
+                              children: [
+                                Text(
+                                  getMenuText(index),
+                                  style: TextStyle(
+                                    color: isCurrentState &&
+                                            menuProvider.menuState == index
+                                        ? AppColor.color
+                                        : hoverMenuColor[index],
+                                    fontSize: LaptopSize.fontSize.menu,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SvgPicture.asset(
+                                  ImagePath.menuIcon,
+                                  width: 22,
+                                  height: 22,
+                                  colorFilter: ColorFilter.mode(
+                                    _currentMenuState == 2
+                                        ? hoverMenuColor[index]
+                                        : Colors.black54,
+                                    BlendMode.srcIn,
+                                  ),
+                                ),
+                              ],
+                            ),
                     ),
                   ),
-              const SizedBox(width: 15),
+                ),
+
+              //
+              const SizedBox(width: 5),
 
               // HOME button
               SizedBox(
-                height: DesktopSize.appBarHeight,
+                height: LaptopSize.appBarHeight,
                 child: TextButton(
                   onPressed: () {},
                   style: TextButton.styleFrom(
@@ -140,13 +142,15 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                     'HOME',
                     style: TextStyle(
                       color: Colors.grey,
-                      fontSize: 18,
+                      fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
               ),
-              const SizedBox(width: 10),
+
+              //
+              const SizedBox(width: 5),
 
               // Search header button
               IconButton(
@@ -155,33 +159,39 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.zero,
                   ),
-                  fixedSize: const Size(64, DesktopSize.appBarHeight),
+                  fixedSize: const Size(
+                    LaptopSize.searchIconWidth,
+                    LaptopSize.searchIconHeight,
+                  ),
                 ),
                 padding: const EdgeInsets.only(top: 10),
                 icon: Image.asset(
                   'assets/images/header1_search.png',
-                  width: 50,
-                  height: 50,
+                  width: 45,
+                  height: 45,
                 ),
               ),
 
-              const SizedBox(width: 10),
+              const SizedBox(width: 5),
 
               // Show all menu button
               IconButton(
                 onPressed: () {},
                 icon: const Icon(Icons.menu),
                 color: Colors.white,
-                iconSize: 38,
+                iconSize: LaptopSize.allMenuIconSize,
                 padding: const EdgeInsets.only(top: 5),
                 style: IconButton.styleFrom(
                   backgroundColor: AppColor.color,
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.zero),
-                  fixedSize: const Size(64, DesktopSize.appBarHeight),
+                  fixedSize: const Size(
+                    LaptopSize.allMenuWidth,
+                    LaptopSize.allMenuHeight,
+                  ),
                 ),
               ),
-              const SizedBox(width: 35),
+              const SizedBox(width: LaptopSize.appBarRightPadding),
             ],
           ),
           body: Stack(
@@ -210,12 +220,12 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                   onEnter: (_) => setState(() {
                     hoverMenuColor[_currentMenuState!] = AppColor.color;
                     _isSubmenuOpen = true;
-                    subMenuHeight = DesktopSize.submenu.maxHeight;
+                    subMenuHeight = LaptopSize.submenu.maxHeight;
                   }),
                   onExit: (_) {
                     setState(() {
                       hoverMenuColor[_currentMenuState!] = Colors.black;
-                      subMenuHeight = DesktopSize.submenu.minHeight;
+                      subMenuHeight = LaptopSize.submenu.minHeight;
                       _isSubmenuOpen = false;
                       isGridVisible = false;
                     });
@@ -250,9 +260,11 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                               duration: const Duration(milliseconds: 300),
                               curve: Curves.easeOut,
                               child: Text(
-                                "Hello",
-                                style: const TextStyle(
-                                  fontSize: 40,
+                                _currentMenuState != null
+                                    ? getMenuText(_currentMenuState!)
+                                    : '',
+                                style: TextStyle(
+                                  fontSize: LaptopSize.fontSize.subLeadingTitle,
                                   fontWeight: FontWeight.w800,
                                 ),
                               ),
@@ -284,49 +296,10 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                                       MenuData.subMenu[_currentMenuState!]
                                           [submenuIndex];
 
-                                  return MouseRegion(
-                                    onEnter: (_) => setState(() {
-                                      hoverMenuColor[submenuIndex] =
-                                          AppColor.color;
-                                    }),
-                                    onExit: (_) => setState(() {
-                                      hoverMenuColor[submenuIndex] =
-                                          Colors.black;
-                                    }),
-                                    child: AnimatedOpacity(
-                                      opacity: isGridVisible ? 1.0 : 0.0,
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                      child: TextButton(
-                                        onPressed: () {
-                                          menuProvider.menuState =
-                                              _currentMenuState!;
-                                          menuProvider.submenuState =
-                                              submenuIndex;
-                                        },
-                                        style: TextButton.styleFrom(
-                                          backgroundColor: Colors.white,
-                                          foregroundColor: Colors.black,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(6),
-                                            side: BorderSide(
-                                              // color:  ?AppColor.color: Colors.white,
-                                              width: 2,
-                                            ),
-                                          ),
-                                          padding: EdgeInsets.zero,
-                                        ),
-                                        child: Text(
-                                          text,
-                                          style: TextStyle(
-                                            fontSize:
-                                                DesktopSize.fontSize.submenu,
-                                          ),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                    ),
+                                  return LaptopSubmenuButton(
+                                    text: text,
+                                    currentMenuState: _currentMenuState!,
+                                    submenuIndex: submenuIndex,
                                   );
                                 },
                               ),
@@ -344,7 +317,7 @@ class _DesktopLayoutState extends State<DesktopLayout> {
     );
   }
 
-  String _getMenuText(int index) {
+  String getMenuText(int index) {
     return MenuData.titleMenu[index];
   }
 }
