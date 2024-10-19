@@ -66,9 +66,8 @@ class _DesktopSubmenuButtonState extends State<DesktopSubmenuButton> {
   Color activedBackgroundColor(MenuProvider menuProvider) {
     if (menuProvider.menuState == null) {
       return Colors.white;
-    } else if (MenuData.subMenu[menuProvider.menuState!]
-            [menuProvider.submenuState] ==
-        widget.text) {
+    } else if (menuProvider.menuState == widget.currentMenuState &&
+        menuProvider.submenuState == widget.submenuIndex) {
       return AppColor.color;
     }
     return Colors.white;
@@ -77,9 +76,8 @@ class _DesktopSubmenuButtonState extends State<DesktopSubmenuButton> {
   Color activedTextColor(MenuProvider menuProvider) {
     if (menuProvider.menuState == null) {
       return Colors.black;
-    } else if (MenuData.subMenu[menuProvider.menuState!]
-            [menuProvider.submenuState] ==
-        widget.text) {
+    } else if (menuProvider.menuState == widget.currentMenuState &&
+        menuProvider.submenuState == widget.submenuIndex) {
       return Colors.white;
     }
     return Colors.black;

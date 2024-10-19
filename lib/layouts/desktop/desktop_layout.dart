@@ -81,7 +81,7 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                       ),
                       child: index != 2
                           ? Text(
-                              getMenuText(index),
+                              MenuData.titleMenu[index],
                               style: TextStyle(
                                 color: isCurrentState &&
                                         menuProvider.menuState == index
@@ -96,7 +96,7 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                           : Row(
                               children: [
                                 Text(
-                                  getMenuText(index),
+                                  MenuData.titleMenu[index],
                                   style: TextStyle(
                                     color: isCurrentState &&
                                             menuProvider.menuState == index
@@ -237,26 +237,30 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                     ),
                     duration: const Duration(milliseconds: 500),
                     curve: Curves.linear,
-                    child: Row(
-                      children: [
-                        Container(
-                          width: leadingWidth,
-                          height: subMenuHeight,
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(30),
+                    child: Container(
+                      margin: EdgeInsets.only(
+                        top: subMenuHeight -
+                            (subMenuHeight - (subMenuHeight / 3)),
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: leadingWidth,
+                            height: subMenuHeight,
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(30),
+                              ),
                             ),
-                            // color: Colors.red,
-                          ),
-                          padding: const EdgeInsets.only(left: 200),
-                          child: Center(
+                            padding: const EdgeInsets.only(left: 300),
                             child: AnimatedOpacity(
                               opacity: isGridVisible ? 1.0 : 0.0,
                               duration: const Duration(milliseconds: 300),
                               curve: Curves.easeOut,
                               child: Text(
                                 _currentMenuState != null
-                                    ? getMenuText(_currentMenuState!)
+                                    ? MenuData.titleMenu[_currentMenuState!]
                                     : '',
                                 style: TextStyle(
                                   fontSize:
@@ -266,42 +270,10 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                               ),
                             ),
                           ),
-                        ),
-                        if (_currentMenuState != null)
-                          AnimatedOpacity(
-                            opacity: isGridVisible ? 1.0 : 0.0,
-                            duration: const Duration(milliseconds: 200),
-                            child: Container(
-                              width: gridViewWidth,
-                              height: gridViewHeight,
-                              // color: Colors.red,
-                              margin: const EdgeInsets.only(top: 50),
-                              child: GridView.builder(
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: crossAxisCount,
-                                  crossAxisSpacing: crossAxisSpacing,
-                                  mainAxisSpacing: mainAxisSpacing,
-                                  childAspectRatio: itemWidth / itemHeight,
-                                ),
-                                itemCount:
-                                    MenuData.subMenu[_currentMenuState!].length,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, submenuIndex) {
-                                  String text =
-                                      MenuData.subMenu[_currentMenuState!]
-                                          [submenuIndex];
-
-                                  return DesktopSubmenuButton(
-                                    text: text,
-                                    currentMenuState: _currentMenuState!,
-                                    submenuIndex: submenuIndex,
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                      ],
+                          if (_currentMenuState != null)
+                            DesktopGridview(menuIndex: _currentMenuState!),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -311,10 +283,6 @@ class _DesktopLayoutState extends State<DesktopLayout> {
         );
       },
     );
-  }
-
-  String getMenuText(int index) {
-    return MenuData.titleMenu[index];
   }
 
   void showAllMenu(
@@ -329,6 +297,7 @@ class _DesktopLayoutState extends State<DesktopLayout> {
           Animation<double> secondaryAnimation) {
         double marginHorizontal = screenWidth * 0.05;
         double marginVertical = screenHeight * 0.05;
+        double paddingHorizontal = screenWidth * 0.03;
         return Center(
           child: Container(
             width: screenWidth,
@@ -366,7 +335,6 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // ignore: use_build_context_synchronously
                       const Text(
                         "전체메뉴",
                         style: TextStyle(
@@ -397,6 +365,8 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                   ),
                 ),
 
+                const SizedBox(height: 20),
+
                 // Menu List
                 Expanded(
                   child: ListView.builder(
@@ -404,27 +374,26 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                     scrollDirection: Axis.vertical,
                     itemBuilder: (context, index) {
                       return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Container(
                             width: screenWidth - marginHorizontal,
-                            height:
-                                MenuData.subMenu[index].length > 4 ? 140 : 80,
-                            color: Colors.amber,
+                            // color: Colors.amber,
                             margin: EdgeInsets.symmetric(
                               horizontal: marginHorizontal,
+                              vertical: 10,
                             ),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 50,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: paddingHorizontal,
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   MenuData.titleMenu[index],
                                   style: const TextStyle(
-                                    fontSize: 30,
+                                    fontSize: 34,
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
                                     decoration: TextDecoration.none,
@@ -434,18 +403,23 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                               ],
                             ),
                           ),
-                          SizedBox(height: 10),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: marginHorizontal),
-                            child: Divider(
-                              height: 5,
-                              thickness: 4,
-                              color: const Color.fromARGB(94, 128, 81, 229)
-                                  .withOpacity(0.4),
+
+                          // visible divider at last menu
+                          if (MenuData.titleMenu[index] !=
+                              MenuData.titleMenu.last)
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: marginHorizontal),
+                              child: Divider(
+                                height: 5,
+                                thickness: 4,
+                                color: const Color.fromARGB(94, 128, 81, 229)
+                                    .withOpacity(0.4),
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 10),
+                          if (MenuData.titleMenu[index] ==
+                              MenuData.titleMenu.last)
+                            const SizedBox(height: 50),
                         ],
                       );
                     },

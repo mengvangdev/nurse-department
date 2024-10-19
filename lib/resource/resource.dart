@@ -13,7 +13,7 @@ export 'package:nurse_department/layouts/mobile_layout.dart';
 
 // desktop layouts
 export 'package:nurse_department/layouts/desktop/desktop_layout.dart';
-export 'package:nurse_department/layouts/desktop/desktop_submenu_button.dart';
+export 'package:nurse_department/layouts/desktop/widgets/desktop_submenu_button.dart';
 export 'package:nurse_department/layouts/desktop/widgets/desktop_gridview.dart';
 
 // laptop layouts
