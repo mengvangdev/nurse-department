@@ -12,8 +12,7 @@ class _DesktopLayoutState extends State<DesktopLayout> {
   List<Color> hoverMenuColor = List.filled(8, Colors.black);
   int? _currentMenuState;
   bool _isSubmenuOpen = false;
-  double subMenuHeight = 0;
-  bool isGridVisible = false;
+  double subMenuHeight = DesktopSize.submenu.minHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -21,25 +20,15 @@ class _DesktopLayoutState extends State<DesktopLayout> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final leadingWidth = screenWidth * 0.35;
-    final gridViewWidth = screenWidth * 0.55;
-    double gridViewHeight = 100; // Subtracting top margin
 
-    // Calculate grid dimensions
-    const int crossAxisCount = 4;
-    const double crossAxisSpacing = 16.0;
-    const double mainAxisSpacing = 12.0;
-
-    // Calculate item width and height
-    final double itemWidth =
-        (gridViewWidth - (crossAxisCount - 1) * crossAxisSpacing) /
-            crossAxisCount;
-    final double itemHeight =
-        (gridViewHeight - mainAxisSpacing) / 2; // Assuming 2 rows
+    log(subMenuHeight.toString());
+    log(_isSubmenuOpen.toString());
+    log(_currentMenuState.toString());
+    log("------------------------");
 
     return Consumer<MenuProvider>(
       builder: (context, menuProvider, child) {
         bool isCurrentState = menuProvider.menuState != null;
-
         return Scaffold(
           appBar: AppBar(
             toolbarHeight: DesktopSize.appBarHeight,
@@ -48,25 +37,27 @@ class _DesktopLayoutState extends State<DesktopLayout> {
               ImagePath.logo,
               width: DesktopSize.logoWidth,
               height: DesktopSize.logoHeight,
-              // fit: BoxFit.contain,
             ),
             actions: [
               for (int index = 0; index < MenuData.titleMenu.length; index++)
                 SizedBox(
                   height: DesktopSize.appBarHeight,
                   child: MouseRegion(
-                    onEnter: (_) => setState(() {
-                      hoverMenuColor[index] = AppColor.color;
-                      _currentMenuState = index;
-                      _isSubmenuOpen = true;
-                      subMenuHeight = DesktopSize.submenu.maxHeight;
-                      isGridVisible = true;
-                    }),
-                    onExit: (_) => setState(() {
-                      hoverMenuColor[index] = Colors.black;
-                      _isSubmenuOpen = false;
-                      subMenuHeight = DesktopSize.submenu.minHeight;
-                    }),
+                    onEnter: (_) {
+                      setState(() {
+                        hoverMenuColor[index] = AppColor.color;
+                        _currentMenuState = index;
+                        _isSubmenuOpen = true;
+                        subMenuHeight = DesktopSize.submenu.maxHeight;
+                      });
+                    },
+                    onExit: (_) {
+                      setState(() {
+                        hoverMenuColor[index] = Colors.black;
+                        _isSubmenuOpen = false;
+                        subMenuHeight = DesktopSize.submenu.minHeight;
+                      });
+                    },
                     child: TextButton(
                       onPressed: null,
                       style: TextButton.styleFrom(
@@ -123,7 +114,6 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                   ),
                 ),
               const SizedBox(width: 15),
-
               // HOME button
               SizedBox(
                 height: DesktopSize.appBarHeight,
@@ -150,7 +140,6 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                 ),
               ),
               const SizedBox(width: 10),
-
               // Search header button
               IconButton(
                 onPressed: () {},
@@ -167,9 +156,7 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                   height: 50,
                 ),
               ),
-
               const SizedBox(width: 10),
-
               // Show all menu button
               IconButton(
                 onPressed: () {
@@ -192,92 +179,15 @@ class _DesktopLayoutState extends State<DesktopLayout> {
           body: Stack(
             children: [
               // Body Content
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: 400,
-                // color: Colors.yellow, // Add a color for visibility
-              ),
-
-              // Barrier to prevent interaction with the background
+              Container(),
               if (_isSubmenuOpen) // Show barrier only when submenu is open
                 const ModalBarrier(
                   dismissible: false, // Prevent dismissing the barrier
                   color: Colors.black38, // Semi-transparent color
                 ),
 
-              // Drop down menu when hover menu TextButton
-              Positioned(
-                // Use Positioned to control the placement
-                top: 0, // Position it at the top
-                left: 0,
-                right: 0,
-                child: MouseRegion(
-                  onEnter: (_) => setState(() {
-                    hoverMenuColor[_currentMenuState!] = AppColor.color;
-                    _isSubmenuOpen = true;
-                    subMenuHeight = DesktopSize.submenu.maxHeight;
-                  }),
-                  onExit: (_) {
-                    setState(() {
-                      hoverMenuColor[_currentMenuState!] = Colors.black;
-                      subMenuHeight = DesktopSize.submenu.minHeight;
-                      _isSubmenuOpen = false;
-                      isGridVisible = false;
-                    });
-                  },
-                  child: AnimatedContainer(
-                    width: screenWidth,
-                    height: subMenuHeight,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFF4F4F4),
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(30),
-                        bottomRight: Radius.circular(30),
-                      ),
-                    ),
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.linear,
-                    child: Container(
-                      margin: EdgeInsets.only(
-                        top: subMenuHeight -
-                            (subMenuHeight - (subMenuHeight / 3)),
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: leadingWidth,
-                            height: subMenuHeight,
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(30),
-                              ),
-                            ),
-                            padding: const EdgeInsets.only(left: 300),
-                            child: AnimatedOpacity(
-                              opacity: isGridVisible ? 1.0 : 0.0,
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeOut,
-                              child: Text(
-                                _currentMenuState != null
-                                    ? MenuData.titleMenu[_currentMenuState!]
-                                    : '',
-                                style: TextStyle(
-                                  fontSize:
-                                      DesktopSize.fontSize.subLeadingTitle,
-                                  fontWeight: FontWeight.w800,
-                                ),
-                              ),
-                            ),
-                          ),
-                          if (_currentMenuState != null)
-                            DesktopGridview(menuIndex: _currentMenuState!),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              // Submenu
+              submenuContainer(screenWidth, leadingWidth),
             ],
           ),
         );
@@ -285,14 +195,86 @@ class _DesktopLayoutState extends State<DesktopLayout> {
     );
   }
 
+  // Submenu Container
+  Widget submenuContainer(double screenWidth, double leadingWidth) {
+    String leadingTitle = "";
+    Widget gridView = Container();
+    if (_currentMenuState != null) {
+      leadingTitle = MenuData.titleMenu[_currentMenuState!];
+      gridView = DesktopGridview(menuIndex: _currentMenuState!);
+    }
+
+    return Positioned(
+      top: 0,
+      left: 0,
+      right: 0,
+      child: MouseRegion(
+        onEnter: (_) {
+          setState(() {
+            hoverMenuColor[_currentMenuState!] = AppColor.color;
+            _isSubmenuOpen = true;
+            subMenuHeight = DesktopSize.submenu.maxHeight;
+          });
+        },
+        onExit: (_) {
+          setState(() {
+            hoverMenuColor[_currentMenuState!] = Colors.black;
+            _isSubmenuOpen = false;
+            subMenuHeight = DesktopSize.submenu.minHeight;
+          });
+        },
+        child: AnimatedContainer(
+          width: screenWidth,
+          height: subMenuHeight,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.linear,
+          decoration: const BoxDecoration(
+            color: Color(0xFFF4F4F4),
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(30),
+              bottomRight: Radius.circular(30),
+            ),
+          ),
+          padding: const EdgeInsets.only(top: 80),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: leadingWidth,
+                height: subMenuHeight,
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(30),
+                  ),
+                ),
+                padding: const EdgeInsets.only(
+                  left: 300,
+                ),
+                child: Text(
+                  leadingTitle,
+                  style: TextStyle(
+                    fontSize: DesktopSize.fontSize.subLeadingTitle,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+              gridView,
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Show all menu dialog
   void showAllMenu(
       BuildContext context, double screenWidth, double screenHeight) {
     showGeneralDialog(
       context: context,
-      barrierDismissible: true,
+      barrierDismissible: false,
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
       barrierColor: Colors.black54,
-      transitionDuration: const Duration(milliseconds: 400),
+      transitionDuration: const Duration(milliseconds: 500),
       pageBuilder: (BuildContext context, Animation<double> animation,
           Animation<double> secondaryAnimation) {
         double marginHorizontal = screenWidth * 0.05;
@@ -431,12 +413,25 @@ class _DesktopLayoutState extends State<DesktopLayout> {
         );
       },
       transitionBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(1.0, -1.0); // Start from top-right corner
+        const end = Offset.zero; // End at the center
+        const curve = Curves.easeInOutCubic;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
         return SlideTransition(
-          position: Tween<Offset>(
-            begin: Offset(0, 1), // Slide from bottom
-            end: Offset(0, 0),
-          ).animate(animation),
-          child: child,
+          position: animation.drive(tween),
+          child: ScaleTransition(
+            scale: Tween<double>(
+              begin: 0.5,
+              end: 1.0,
+            ).animate(CurvedAnimation(
+              parent: animation,
+              curve: curve,
+            )),
+            child: child,
+          ),
         );
       },
     );

@@ -23,14 +23,14 @@ class LaptopSize {
 
 class LaptopFontSize {
   final double menu = 20;
-  final double subLeadingTitle = 40;
+  final double subLeadingTitle = 36;
   final double submenu = 18;
   const LaptopFontSize();
 }
 
 // *----- SubMenu -----
 class LaptopSubMenuSize {
-  final double maxHeight = 240;
+  final double maxHeight = 200;
   final double minHeight = 0;
   const LaptopSubMenuSize();
 }

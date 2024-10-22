@@ -1,13 +1,13 @@
 import 'package:nurse_department/resource/resource.dart';
 
-class LaptopLayout extends StatefulWidget {
-  const LaptopLayout({super.key});
+class TabletLayout extends StatefulWidget {
+  const TabletLayout({super.key});
 
   @override
-  State<LaptopLayout> createState() => _LaptopLayoutState();
+  State<TabletLayout> createState() => _TabletLayoutState();
 }
 
-class _LaptopLayoutState extends State<LaptopLayout> {
+class _TabletLayoutState extends State<TabletLayout> {
   List<Color> hoverMenuColor = List.filled(8, Colors.black);
   int? _currentMenuState;
   bool _isSubmenuOpen = false;

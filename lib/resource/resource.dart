@@ -8,7 +8,6 @@ export 'package:nurse_department/pages/introduce/intro_page.dart';
 
 // layouts
 export 'package:nurse_department/layouts/responsive_layout.dart';
-export 'package:nurse_department/layouts/tablet_layout.dart';
 export 'package:nurse_department/layouts/mobile_layout.dart';
 
 // desktop layouts
@@ -18,7 +17,13 @@ export 'package:nurse_department/layouts/desktop/widgets/desktop_gridview.dart';
 
 // laptop layouts
 export 'package:nurse_department/layouts/laptop/laptop_layout.dart';
-export 'package:nurse_department/layouts/laptop/laptop_submenu_button.dart';
+export 'package:nurse_department/layouts/laptop/widgets/laptop_submenu_button.dart';
+export 'package:nurse_department/layouts/laptop/widgets/laptop_gridview.dart';
+
+// tablet layouts
+export 'package:nurse_department/layouts/tablet/tablet_layout.dart';
+export 'package:nurse_department/layouts/tablet/widgets/tablet_submenu_button.dart';
+export 'package:nurse_department/layouts/tablet/widgets/tablet_gridview.dart';
 
 // constants
 export 'package:nurse_department/constants/dimension.dart';

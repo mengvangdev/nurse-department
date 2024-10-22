@@ -1,7 +1,7 @@
 import 'package:nurse_department/resource/resource.dart';
 
-class DesktopSubmenuButton extends StatefulWidget {
-  const DesktopSubmenuButton({
+class LaptopSubmenuButton extends StatefulWidget {
+  const LaptopSubmenuButton({
     super.key,
     required this.text,
     required this.currentMenuState,
@@ -13,10 +13,10 @@ class DesktopSubmenuButton extends StatefulWidget {
   final int submenuIndex;
 
   @override
-  State<DesktopSubmenuButton> createState() => _DesktopSubmenuButtonState();
+  State<LaptopSubmenuButton> createState() => _LaptopSubmenuButtonState();
 }
 
-class _DesktopSubmenuButtonState extends State<DesktopSubmenuButton> {
+class _LaptopSubmenuButtonState extends State<LaptopSubmenuButton> {
   bool isSubmenuHover = false;
 
   @override
@@ -39,20 +39,19 @@ class _DesktopSubmenuButtonState extends State<DesktopSubmenuButton> {
               backgroundColor: activedBackgroundColor(menuProvider),
               foregroundColor: activedTextColor(menuProvider),
               overlayColor: Colors.transparent,
+              padding: EdgeInsets.zero,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(6),
+                borderRadius: BorderRadius.circular(8),
                 side: BorderSide(
                   color: isSubmenuHover ? AppColor.color : Colors.transparent,
                   width: 2,
                 ),
               ),
-              shadowColor: AppColor.color,
-              padding: EdgeInsets.zero,
             ),
             child: Text(
               widget.text,
               style: TextStyle(
-                fontSize: DesktopSize.fontSize.submenu,
+                fontSize: LaptopSize.fontSize.submenu,
               ),
               textAlign: TextAlign.center,
             ),
@@ -65,8 +64,9 @@ class _DesktopSubmenuButtonState extends State<DesktopSubmenuButton> {
   Color activedBackgroundColor(MenuProvider menuProvider) {
     if (menuProvider.menuState == null) {
       return Colors.white;
-    } else if (menuProvider.menuState == widget.currentMenuState &&
-        menuProvider.submenuState == widget.submenuIndex) {
+    } else if (MenuData.subMenu[menuProvider.menuState!]
+            [menuProvider.submenuState] ==
+        widget.text) {
       return AppColor.color;
     }
     return Colors.white;
@@ -75,8 +75,9 @@ class _DesktopSubmenuButtonState extends State<DesktopSubmenuButton> {
   Color activedTextColor(MenuProvider menuProvider) {
     if (menuProvider.menuState == null) {
       return Colors.black;
-    } else if (menuProvider.menuState == widget.currentMenuState &&
-        menuProvider.submenuState == widget.submenuIndex) {
+    } else if (MenuData.subMenu[menuProvider.menuState!]
+            [menuProvider.submenuState] ==
+        widget.text) {
       return Colors.white;
     }
     return Colors.black;

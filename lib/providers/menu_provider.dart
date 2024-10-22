@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:nurse_department/resource/resource.dart';
 
 class MenuProvider extends ChangeNotifier {

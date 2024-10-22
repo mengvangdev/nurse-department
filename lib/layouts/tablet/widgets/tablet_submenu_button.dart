@@ -1,8 +1,7 @@
-import 'dart:developer';
 import 'package:nurse_department/resource/resource.dart';
 
-class LaptopSubmenuButton extends StatefulWidget {
-  const LaptopSubmenuButton({
+class TabletSubmenuButton extends StatefulWidget {
+  const TabletSubmenuButton({
     super.key,
     required this.text,
     required this.currentMenuState,
@@ -14,10 +13,10 @@ class LaptopSubmenuButton extends StatefulWidget {
   final int submenuIndex;
 
   @override
-  State<LaptopSubmenuButton> createState() => _LaptopSubmenuButtonState();
+  State<TabletSubmenuButton> createState() => TabletSubmenuButtonState();
 }
 
-class _LaptopSubmenuButtonState extends State<LaptopSubmenuButton> {
+class TabletSubmenuButtonState extends State<TabletSubmenuButton> {
   bool isSubmenuHover = false;
 
   @override
