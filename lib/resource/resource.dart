@@ -29,6 +29,7 @@ export 'package:nurse_department/layouts/tablet/widgets/tablet_gridview.dart';
 export 'package:nurse_department/constants/dimension.dart';
 export 'package:nurse_department/constants/desktop_size.dart';
 export 'package:nurse_department/constants/laptop_size.dart';
+export 'package:nurse_department/constants/tablet_size.dart';
 export 'package:nurse_department/constants/color_constant.dart';
 export 'package:nurse_department/constants/menu_data_constant.dart';
 export 'package:nurse_department/constants/image_path.dart';
@@ -42,3 +43,6 @@ export 'package:nurse_department/providers/menu_provider.dart';
 
 // routes
 export 'package:nurse_department/routes/router.dart';
+
+// widgets
+export 'package:nurse_department/widgets/submenu_button_background_color.dart';

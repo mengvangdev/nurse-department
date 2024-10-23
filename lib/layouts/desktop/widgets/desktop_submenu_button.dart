@@ -36,8 +36,16 @@ class _DesktopSubmenuButtonState extends State<DesktopSubmenuButton> {
               menuProvider.submenuState = widget.submenuIndex;
             },
             style: TextButton.styleFrom(
-              backgroundColor: activedBackgroundColor(menuProvider),
-              foregroundColor: activedTextColor(menuProvider),
+              backgroundColor: SubmenuBtn.activedBackgroundColor(
+                currentMenuState: widget.currentMenuState,
+                currentSubmenuState: widget.submenuIndex,
+                menuProvider: menuProvider,
+              ),
+              foregroundColor: SubmenuBtn.activedTextColor(
+                currentMenuState: widget.currentMenuState,
+                currentSubmenuState: widget.submenuIndex,
+                menuProvider: menuProvider,
+              ),
               overlayColor: Colors.transparent,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(6),
@@ -62,23 +70,23 @@ class _DesktopSubmenuButtonState extends State<DesktopSubmenuButton> {
     );
   }
 
-  Color activedBackgroundColor(MenuProvider menuProvider) {
-    if (menuProvider.menuState == null) {
-      return Colors.white;
-    } else if (menuProvider.menuState == widget.currentMenuState &&
-        menuProvider.submenuState == widget.submenuIndex) {
-      return AppColor.color;
-    }
-    return Colors.white;
-  }
+  // Color activedBackgroundColor(MenuProvider menuProvider) {
+  //   if (menuProvider.menuState == null) {
+  //     return Colors.white;
+  //   } else if (menuProvider.menuState == widget.currentMenuState &&
+  //       menuProvider.submenuState == widget.submenuIndex) {
+  //     return AppColor.color;
+  //   }
+  //   return Colors.white;
+  // }
 
-  Color activedTextColor(MenuProvider menuProvider) {
-    if (menuProvider.menuState == null) {
-      return Colors.black;
-    } else if (menuProvider.menuState == widget.currentMenuState &&
-        menuProvider.submenuState == widget.submenuIndex) {
-      return Colors.white;
-    }
-    return Colors.black;
-  }
+  // Color activedTextColor(MenuProvider menuProvider) {
+  //   if (menuProvider.menuState == null) {
+  //     return Colors.black;
+  //   } else if (menuProvider.menuState == widget.currentMenuState &&
+  //       menuProvider.submenuState == widget.submenuIndex) {
+  //     return Colors.white;
+  //   }
+  //   return Colors.black;
+  // }
 }

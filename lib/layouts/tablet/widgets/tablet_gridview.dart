@@ -13,13 +13,13 @@ class TabletGridViewState extends State<TabletGridView> {
   @override
   Widget build(BuildContext context) {
     final gridViewWidth = MediaQuery.of(context).size.width * 0.55;
-    double gridViewTwoRowsHeight = 90;
-    double gridViewOneRowHeight = 45;
+    double gridViewTwoRowsHeight = 80;
+    double gridViewOneRowHeight = 40;
 
     // Calculate grid dimensions
     int crossAxisCount = 4;
-    double crossAxisSpacing = 14.0;
-    double mainAxisSpacing = 10.0;
+    double crossAxisSpacing = 12.0;
+    double mainAxisSpacing = 8.0;
     // Calculate item width and height
     var itemWidth = (gridViewWidth - (crossAxisCount - 1) * crossAxisSpacing) /
         crossAxisCount;
@@ -38,6 +38,7 @@ class TabletGridViewState extends State<TabletGridView> {
       margin: const EdgeInsets.only(
         top: 10,
       ),
+      // color: Colors.amber,
       child: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: crossAxisCount,
@@ -48,7 +49,7 @@ class TabletGridViewState extends State<TabletGridView> {
         itemCount: MenuData.subMenu[widget.menuIndex].length,
         itemBuilder: (context, index) {
           String text = MenuData.subMenu[widget.menuIndex][index];
-          return LaptopSubmenuButton(
+          return TabletSubmenuButton(
             text: text,
             currentMenuState: widget.menuIndex,
             submenuIndex: index,
