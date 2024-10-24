@@ -11,15 +11,19 @@ class ResponsiveLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      if (constraints.maxWidth <= Dimension.mobile) {
-        log("mobile = ${constraints.maxWidth}");
-      } else if (constraints.maxWidth <= Dimension.tablet) {
-        log("tablet = ${constraints.maxWidth}");
-      } else if (constraints.maxWidth <= Dimension.laptop) {
-        log("laptop = ${constraints.maxWidth}");
-      }
-      return responsive;
-    });
+    return Consumer<ResponsiveProvider>(
+      builder: (context, responsiveProvider, child) {
+        return LayoutBuilder(builder: (context, constraints) {
+          if (constraints.maxWidth <= Dimension.mobile) {
+            log("mobile = ${constraints.maxWidth}");
+          } else if (constraints.maxWidth <= Dimension.tablet) {
+            log("tablet = ${constraints.maxWidth}");
+          } else if (constraints.maxWidth <= Dimension.laptop) {
+            log("laptop = ${constraints.maxWidth}");
+          }
+          return responsive;
+        });
+      },
+    );
   }
 }

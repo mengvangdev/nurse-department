@@ -88,4 +88,8 @@ class ResponsiveProvider extends ChangeNotifier {
   void laptop() {
     notifyListeners();
   }
+
+  void tablet() {
+    notifyListeners();
+  }
 }
