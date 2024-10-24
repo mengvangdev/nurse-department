@@ -12,50 +12,57 @@ class DesktopGridview extends StatefulWidget {
 class _DesktopGridviewState extends State<DesktopGridview> {
   @override
   Widget build(BuildContext context) {
-    final gridViewWidth = MediaQuery.of(context).size.width * 0.55;
-    double gridViewTwoRowsHeight = 100;
-    double gridViewOneRowHeight = 50;
+    return Consumer<ResponsiveProvider>(
+      builder: (context, responsive, child) {
+        final gridViewWidth =
+            responsive.gridViewWidth * MediaQuery.of(context).size.width;
+        double gridViewTwoRowsHeight = responsive.gridViewTwoRowsHeight;
+        double gridViewOneRowHeight = responsive.gridViewOneRowHeight;
 
-    // Calculate grid dimensions
-    int crossAxisCount = 4;
-    double crossAxisSpacing = 16.0;
-    double mainAxisSpacing = 12.0;
-    // Calculate item width and height
-    var itemWidth = (gridViewWidth - (crossAxisCount - 1) * crossAxisSpacing) /
-        crossAxisCount;
-    var itemHeight =
-        (gridViewTwoRowsHeight - mainAxisSpacing) / 2; // Assuming 2 rows
-    var childAspectRatio = itemWidth / itemHeight;
+        // Calculate grid dimensions
+        int crossAxisCount = responsive.crossAxisCount.toInt();
+        double crossAxisSpacing = responsive.crossAxisSpacing;
+        double mainAxisSpacing = responsive.mainAxisSpacing;
+        // Calculate item width and height
+        var itemWidth =
+            (gridViewWidth - (crossAxisCount - 1) * crossAxisSpacing) /
+                crossAxisCount;
+        var itemHeight =
+            (gridViewTwoRowsHeight - mainAxisSpacing) / 2; // Assuming 2 rows
+        var childAspectRatio = itemWidth / itemHeight;
 
-    bool isTwoRows = MenuData.subMenu[widget.menuIndex].length > crossAxisCount;
+        bool isTwoRows =
+            MenuData.subMenu[widget.menuIndex].length > crossAxisCount;
 
-    var gridViewHeight =
-        isTwoRows ? gridViewTwoRowsHeight : gridViewOneRowHeight;
+        var gridViewHeight =
+            isTwoRows ? gridViewTwoRowsHeight : gridViewOneRowHeight;
 
-    return Container(
-      width: gridViewWidth,
-      height: gridViewHeight,
-      // color: Colors.red,
-      margin: const EdgeInsets.only(
-        top: 10,
-      ),
-      child: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: crossAxisCount,
-          crossAxisSpacing: crossAxisSpacing,
-          mainAxisSpacing: mainAxisSpacing,
-          childAspectRatio: childAspectRatio,
-        ),
-        itemCount: MenuData.subMenu[widget.menuIndex].length,
-        itemBuilder: (context, index) {
-          String text = MenuData.subMenu[widget.menuIndex][index];
-          return DesktopSubmenuButton(
-            text: text,
-            currentMenuState: widget.menuIndex,
-            submenuIndex: index,
-          );
-        },
-      ),
+        return Container(
+          width: gridViewWidth,
+          height: gridViewHeight,
+          // color: Colors.red,
+          margin: EdgeInsets.only(
+            top: responsive.gridViewMarginTop,
+          ),
+          child: GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: crossAxisCount,
+              crossAxisSpacing: crossAxisSpacing,
+              mainAxisSpacing: mainAxisSpacing,
+              childAspectRatio: childAspectRatio,
+            ),
+            itemCount: MenuData.subMenu[widget.menuIndex].length,
+            itemBuilder: (context, index) {
+              String text = MenuData.subMenu[widget.menuIndex][index];
+              return DesktopSubmenuButton(
+                text: text,
+                currentMenuState: widget.menuIndex,
+                submenuIndex: index,
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

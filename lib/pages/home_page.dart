@@ -11,10 +11,7 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return const ResponsiveLayout(
-      mobile: MobileLayout(),
-      tablet: TabletLayout(),
-      laptop: LaptopLayout(),
-      desktop: DesktopLayout(),
+      responsive: DesktopLayout(),
     );
   }
 }

@@ -21,8 +21,8 @@ class _DesktopSubmenuButtonState extends State<DesktopSubmenuButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<MenuProvider>(
-      builder: (context, menuProvider, child) {
+    return Consumer2<MenuProvider, ResponsiveProvider>(
+      builder: (context, menuProvider, responsive, child) {
         return MouseRegion(
           onEnter: (_) => setState(() {
             isSubmenuHover = true;
@@ -30,7 +30,7 @@ class _DesktopSubmenuButtonState extends State<DesktopSubmenuButton> {
           onExit: (_) => setState(() {
             isSubmenuHover = false;
           }),
-          child: TextButton(
+          child: TextButton.icon(
             onPressed: () {
               menuProvider.menuState = widget.currentMenuState;
               menuProvider.submenuState = widget.submenuIndex;
@@ -57,36 +57,42 @@ class _DesktopSubmenuButtonState extends State<DesktopSubmenuButton> {
               shadowColor: AppColor.color,
               padding: EdgeInsets.zero,
             ),
-            child: Text(
+            label: Text(
               widget.text,
               style: TextStyle(
-                fontSize: DesktopSize.fontSize.submenu,
+                fontSize: responsive.submenuTextButtonFontSize,
               ),
               textAlign: TextAlign.center,
             ),
+            iconAlignment: IconAlignment.end,
+            icon: widget.currentMenuState == 2 && widget.submenuIndex != 2
+                ? Image.asset(
+                    ImagePath.linkIcon,
+                    width: responsive.submenuTextButtonLinkIconWidth,
+                    height: responsive.submenuTextButtonLinkIconHeight,
+                    color: activedLinkIconColor(
+                      currentMenuState: widget.currentMenuState,
+                      currentSubmenuState: widget.submenuIndex,
+                      menuProvider: menuProvider,
+                    ),
+                  )
+                : null,
           ),
         );
       },
     );
   }
 
-  // Color activedBackgroundColor(MenuProvider menuProvider) {
-  //   if (menuProvider.menuState == null) {
-  //     return Colors.white;
-  //   } else if (menuProvider.menuState == widget.currentMenuState &&
-  //       menuProvider.submenuState == widget.submenuIndex) {
-  //     return AppColor.color;
-  //   }
-  //   return Colors.white;
-  // }
-
-  // Color activedTextColor(MenuProvider menuProvider) {
-  //   if (menuProvider.menuState == null) {
-  //     return Colors.black;
-  //   } else if (menuProvider.menuState == widget.currentMenuState &&
-  //       menuProvider.submenuState == widget.submenuIndex) {
-  //     return Colors.white;
-  //   }
-  //   return Colors.black;
-  // }
+  Color activedLinkIconColor(
+      {required int currentMenuState,
+      required int currentSubmenuState,
+      required MenuProvider menuProvider}) {
+    if (menuProvider.menuState == null) {
+      return Colors.grey.shade700;
+    } else if (menuProvider.menuState == currentMenuState &&
+        menuProvider.submenuState == currentSubmenuState) {
+      return Colors.white;
+    }
+    return Colors.grey.shade700;
+  }
 }

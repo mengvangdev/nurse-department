@@ -12,9 +12,5 @@ final router = GoRouter(
       path: '/',
       builder: (context, state) => const HomePage(),
     ),
-    GoRoute(
-      path: Introduce.intro,
-      builder: (context, state) => const IntroPage(),
-    ),
   ],
 );

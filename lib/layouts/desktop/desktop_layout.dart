@@ -9,176 +9,153 @@ class DesktopLayout extends StatefulWidget {
 }
 
 class _DesktopLayoutState extends State<DesktopLayout> {
-  List<Color> hoverMenuColor = List.filled(8, Colors.black);
+  List<Color> menuTextHoverColor = List.filled(8, Colors.black);
   int? _currentMenuState;
   bool _isSubmenuOpen = false;
-  double subMenuHeight = DesktopSize.submenu.minHeight;
+  double submenuHeight = DesktopSize.submenu.minHeight;
 
   @override
   Widget build(BuildContext context) {
-    // Calculate sizes
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final leadingWidth = screenWidth * 0.35;
 
-    log(subMenuHeight.toString());
-    log(_isSubmenuOpen.toString());
-    log(_currentMenuState.toString());
-    log("------------------------");
+    return Consumer2<ResponsiveProvider, MenuProvider>(
+      builder: (context, responsive, menuProvider, child) {
+        var leadingWidth = responsive.leadingSubtitleWidth * screenWidth;
 
-    return Consumer<MenuProvider>(
-      builder: (context, menuProvider, child) {
-        bool isCurrentState = menuProvider.menuState != null;
         return Scaffold(
           appBar: AppBar(
-            toolbarHeight: DesktopSize.appBarHeight,
-            titleSpacing: 50,
+            toolbarHeight: responsive.appBarHeight,
+            titleSpacing: responsive.appBarPaddingLeft,
             title: Image.asset(
               ImagePath.logo,
-              width: DesktopSize.logoWidth,
-              height: DesktopSize.logoHeight,
+              width: responsive.logoWidth,
+              height: responsive.logoHeight,
             ),
             actions: [
               for (int index = 0; index < MenuData.titleMenu.length; index++)
                 SizedBox(
-                  height: DesktopSize.appBarHeight,
+                  height: responsive.appBarHeight,
                   child: MouseRegion(
                     onEnter: (_) {
                       setState(() {
-                        hoverMenuColor[index] = AppColor.color;
+                        menuTextHoverColor[index] = AppColor.color;
                         _currentMenuState = index;
                         _isSubmenuOpen = true;
-                        subMenuHeight = DesktopSize.submenu.maxHeight;
+                        submenuHeight = DesktopSize.submenu.maxHeight;
                       });
                     },
                     onExit: (_) {
                       setState(() {
-                        hoverMenuColor[index] = Colors.black;
+                        menuTextHoverColor[index] = Colors.black;
                         _isSubmenuOpen = false;
-                        subMenuHeight = DesktopSize.submenu.minHeight;
+                        submenuHeight = DesktopSize.submenu.minHeight;
                       });
                     },
-                    child: TextButton(
-                      onPressed: null,
-                      style: TextButton.styleFrom(
-                        overlayColor: Colors.transparent,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: DesktopSize.menuPadding),
-                        minimumSize: Size.zero,
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero,
-                        ),
-                      ),
-                      child: index != 2
-                          ? Text(
-                              MenuData.titleMenu[index],
-                              style: TextStyle(
-                                color: isCurrentState &&
-                                        menuProvider.menuState == index
-                                    ? AppColor.color
-                                    : hoverMenuColor[index],
-                                fontSize: DesktopSize.fontSize.menu,
-                                fontWeight: menuProvider.menuState == index
-                                    ? FontWeight.w800
-                                    : FontWeight.bold,
+                    child: TextButton.icon(
+                      onPressed: () {},
+                      style: buttonStyle(responsive),
+                      label: text(index, menuProvider, responsive),
+                      iconAlignment: IconAlignment.end,
+                      icon: index == 2
+                          ? Container(
+                              margin: const EdgeInsets.only(left: 0),
+                              child: Image.asset(
+                                ImagePath.linkIcon,
+                                width: responsive.menuTextButtonLinkIconWidth,
+                                height: responsive.menuTextButtonLinkIconHeight,
+                                color: _currentMenuState == 2
+                                    ? menuTextHoverColor[index]
+                                    : Colors.grey.shade700,
                               ),
                             )
-                          : Row(
-                              children: [
-                                Text(
-                                  MenuData.titleMenu[index],
-                                  style: TextStyle(
-                                    color: isCurrentState &&
-                                            menuProvider.menuState == index
-                                        ? AppColor.color
-                                        : hoverMenuColor[index],
-                                    fontSize: DesktopSize.fontSize.menu,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SvgPicture.asset(
-                                  ImagePath.menuIcon,
-                                  width: 22,
-                                  height: 22,
-                                  colorFilter: ColorFilter.mode(
-                                    _currentMenuState == 2
-                                        ? hoverMenuColor[index]
-                                        : Colors.black54,
-                                    BlendMode.srcIn,
-                                  ),
-                                ),
-                              ],
-                            ),
+                          : null,
                     ),
                   ),
                 ),
-              const SizedBox(width: 15),
+
+              SizedBox(width: responsive.spaceBetweenIcon),
+
               // HOME button
-              SizedBox(
-                height: DesktopSize.appBarHeight,
+              Container(
+                margin: EdgeInsets.only(top: responsive.homeMarginTop),
                 child: TextButton(
                   onPressed: () {},
                   style: TextButton.styleFrom(
-                    padding:
-                        const EdgeInsets.only(top: 12, left: 10, right: 10),
                     overlayColor: Colors.transparent,
-                    minimumSize: Size.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.zero,
-                    ),
                   ),
-                  child: const Text(
+                  child: Text(
                     'HOME',
                     style: TextStyle(
                       color: Colors.grey,
-                      fontSize: 18,
+                      fontSize: responsive.homeButtonFontSize,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
               ),
-              const SizedBox(width: 10),
-              // Search header button
+
+              // space between icon
+              SizedBox(width: responsive.spaceBetweenIcon),
+
+              // search icon button
               IconButton(
                 onPressed: () {},
+                icon: Image.asset(
+                  ImagePath.searchIcon,
+                  width: responsive.searchIconWidth,
+                  height: responsive.searchIconHeight,
+                  color: Colors.black54,
+                ),
+                padding: const EdgeInsets.only(top: 10),
                 style: IconButton.styleFrom(
+                  hoverColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.zero,
                   ),
-                  fixedSize: const Size(64, DesktopSize.appBarHeight),
-                ),
-                padding: const EdgeInsets.only(top: 10),
-                icon: Image.asset(
-                  'assets/images/header1_search.png',
-                  width: 50,
-                  height: 50,
+                  fixedSize: Size(
+                    responsive.searchIconSizeWidth,
+                    responsive.searchIconSizeHeight,
+                  ),
                 ),
               ),
-              const SizedBox(width: 10),
-              // Show all menu button
+
+              // space between icon
+              SizedBox(width: responsive.spaceBetweenIcon),
+
+              // menu icon button
               IconButton(
                 onPressed: () {
-                  showAllMenu(context, screenWidth, screenHeight);
+                  menuIconButton(
+                      context, responsive, screenWidth, screenHeight);
                 },
-                icon: const Icon(Icons.menu),
-                color: Colors.white,
-                iconSize: 38,
-                padding: const EdgeInsets.only(top: 5),
+                icon: Image.asset(
+                  ImagePath.menuIconButton,
+                  color: Colors.white,
+                  width: responsive.menuIconWidth,
+                  height: responsive.menuIconHeight,
+                ),
+                padding: EdgeInsets.only(top: responsive.menuIconPaddingTop),
                 style: IconButton.styleFrom(
                   backgroundColor: AppColor.color,
                   shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.zero),
-                  fixedSize: const Size(64, DesktopSize.appBarHeight),
+                    borderRadius: BorderRadius.zero,
+                  ),
+                  fixedSize: Size(
+                    responsive.menuIconSizeWidth,
+                    responsive.menuIconSizeHeight,
+                  ),
                 ),
               ),
-              const SizedBox(width: 35),
+
+              SizedBox(width: responsive.appBarPaddingRight),
             ],
           ),
           body: Stack(
             children: [
               // Body Content
+
               Container(),
               if (_isSubmenuOpen) // Show barrier only when submenu is open
                 const ModalBarrier(
@@ -187,7 +164,7 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                 ),
 
               // Submenu
-              submenuContainer(screenWidth, leadingWidth),
+              submenuContainer(responsive, screenWidth, leadingWidth),
             ],
           ),
         );
@@ -195,8 +172,39 @@ class _DesktopLayoutState extends State<DesktopLayout> {
     );
   }
 
+  // Menu TextButton Style
+  ButtonStyle? buttonStyle(ResponsiveProvider responsive) {
+    return TextButton.styleFrom(
+      overlayColor: Colors.transparent,
+      backgroundColor: Colors.white,
+      padding: EdgeInsets.symmetric(
+        horizontal: responsive.menuTextButtonPadding,
+      ),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.zero,
+      ),
+    );
+  }
+
+  // Menu TextButton Text
+  Widget text(
+      int index, MenuProvider menuProvider, ResponsiveProvider responsive) {
+    return Text(
+      MenuData.titleMenu[index],
+      style: TextStyle(
+        color: menuProvider.menuState == index
+            ? AppColor.color
+            : menuTextHoverColor[index],
+        fontSize: responsive.menuTextButtonFontSize,
+        fontWeight:
+            menuProvider.menuState == index ? FontWeight.w800 : FontWeight.bold,
+      ),
+    );
+  }
+
   // Submenu Container
-  Widget submenuContainer(double screenWidth, double leadingWidth) {
+  Widget submenuContainer(
+      ResponsiveProvider resonpive, double screenWidth, double leadingWidth) {
     String leadingTitle = "";
     Widget gridView = Container();
     if (_currentMenuState != null) {
@@ -211,21 +219,21 @@ class _DesktopLayoutState extends State<DesktopLayout> {
       child: MouseRegion(
         onEnter: (_) {
           setState(() {
-            hoverMenuColor[_currentMenuState!] = AppColor.color;
+            menuTextHoverColor[_currentMenuState!] = AppColor.color;
             _isSubmenuOpen = true;
-            subMenuHeight = DesktopSize.submenu.maxHeight;
+            submenuHeight = DesktopSize.submenu.maxHeight;
           });
         },
         onExit: (_) {
           setState(() {
-            hoverMenuColor[_currentMenuState!] = Colors.black;
+            menuTextHoverColor[_currentMenuState!] = Colors.black;
             _isSubmenuOpen = false;
-            subMenuHeight = DesktopSize.submenu.minHeight;
+            submenuHeight = DesktopSize.submenu.minHeight;
           });
         },
         child: AnimatedContainer(
           width: screenWidth,
-          height: subMenuHeight,
+          height: submenuHeight,
           duration: const Duration(milliseconds: 300),
           curve: Curves.linear,
           decoration: const BoxDecoration(
@@ -235,25 +243,25 @@ class _DesktopLayoutState extends State<DesktopLayout> {
               bottomRight: Radius.circular(30),
             ),
           ),
-          padding: const EdgeInsets.only(top: 80),
+          padding: EdgeInsets.only(top: resonpive.submenuPaddingTop),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 width: leadingWidth,
-                height: subMenuHeight,
+                height: submenuHeight,
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(30),
                   ),
                 ),
-                padding: const EdgeInsets.only(
-                  left: 300,
+                padding: EdgeInsets.only(
+                  left: resonpive.leadingSubtitlePaddingLeft,
                 ),
                 child: Text(
                   leadingTitle,
                   style: TextStyle(
-                    fontSize: DesktopSize.fontSize.subLeadingTitle,
+                    fontSize: resonpive.leadingSubtitleFontSize,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
@@ -267,8 +275,8 @@ class _DesktopLayoutState extends State<DesktopLayout> {
   }
 
   // Show all menu dialog
-  void showAllMenu(
-      BuildContext context, double screenWidth, double screenHeight) {
+  void menuIconButton(BuildContext context, ResponsiveProvider responsive,
+      double screenWidth, double screenHeight) {
     showGeneralDialog(
       context: context,
       barrierDismissible: false,
@@ -277,8 +285,9 @@ class _DesktopLayoutState extends State<DesktopLayout> {
       transitionDuration: const Duration(milliseconds: 500),
       pageBuilder: (BuildContext context, Animation<double> animation,
           Animation<double> secondaryAnimation) {
-        double marginHorizontal = screenWidth * 0.05;
-        double marginVertical = screenHeight * 0.05;
+        double marginHorizontal =
+            screenWidth * responsive.dialogMarginHorizontal;
+        double marginVertical = screenHeight * responsive.dialogMarginVertical;
         double paddingHorizontal = screenWidth * 0.03;
         return Center(
           child: Container(
@@ -290,6 +299,7 @@ class _DesktopLayoutState extends State<DesktopLayout> {
             ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(35),
+              // color: Colors.amber,
               color: const Color(0xFFF4F4F4),
               border: Border.all(
                 width: 0,
@@ -302,9 +312,9 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                 // ----- Header -----
                 Container(
                   width: screenWidth - marginHorizontal * 2,
-                  height: 130,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 50,
+                  height: responsive.dialogHeaderHeight,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: responsive.dialogHeaderPaddingHor,
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(35),
@@ -317,11 +327,11 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         "전체메뉴",
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 36,
+                          fontSize: responsive.dialogHeaderTitleFontSize,
                           fontWeight: FontWeight.bold,
                           decoration: TextDecoration.none,
                         ),
@@ -336,18 +346,25 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                               Radius.circular(10),
                             ),
                           ),
-                          fixedSize: const Size(70, 70),
+                          fixedSize: Size(
+                            responsive.closeButtonSizeWidth,
+                            responsive.closeButtonSizeHeight,
+                          ),
                           backgroundColor: Colors.white,
                         ),
                         color: AppColor.alertColor,
-                        iconSize: 38,
-                        icon: const Icon(Icons.close),
+                        icon: Image.asset(
+                          ImagePath.closeIcon,
+                          color: AppColor.alertColor,
+                          width: responsive.closeIconWidth,
+                          height: responsive.closeButtonSizeHeight,
+                        ),
                       ),
                     ],
                   ),
                 ),
 
-                const SizedBox(height: 20),
+                SizedBox(height: responsive.dialogSpaceBetweenHeaderAndList),
 
                 // Menu List
                 Expanded(

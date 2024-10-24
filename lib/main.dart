@@ -7,14 +7,17 @@ void main() {
         ChangeNotifierProvider(
           create: (_) => MenuProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => ResponsiveProvider(context),
+        ),
       ],
-      child: const MyApp(),
+      child: const MyWebsite(),
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyWebsite extends StatelessWidget {
+  const MyWebsite({super.key});
 
   @override
   Widget build(BuildContext context) {

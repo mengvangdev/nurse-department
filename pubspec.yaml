@@ -26,6 +26,10 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/icons/link.svg
     - assets/images/logo.png
     - assets/images/header1_search.png
+    - assets/icons/search-icon-button.png
+    - assets/icons/search-icon.png
+    - assets/icons/menu-icon-button.png
+    - assets/icons/link-icon.png
+    - assets/icons/close-icon.png
